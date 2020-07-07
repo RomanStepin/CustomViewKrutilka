@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KrutilkaView">
+        <attr name="segmentCount" format="integer">
+            <enum name="x2" value="2"/>
+            <enum name="x4" value="4"/>
+            <enum name="x6" value="6"/>
+            <enum name="x8" value="8"/>
+        </attr>
+        <attr name="colorTheme" format="string">
+            <enum name="black_white" value="1"/>
+            <enum name="black_red" value="2"/>
+        </attr>
+        <attr name="radius" format="float">
+        </attr>
+    </declare-styleable>
+</resources>
