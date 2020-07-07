@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         krutilkaView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((KrutilkaView)v).rotate(360);
+                ((KrutilkaView)v).rotate(180);
             }
         });
     }
