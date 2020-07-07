@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+=======
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> 1991aad... Пустой проект с кастомной вьюхой "Крутилка"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+<<<<<<< HEAD
+    <com.example.customviewkrutilka.KrutilkaView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:radius="300"
+        app:colorTheme="black_red"
+        app:segmentCount="x8"
+        android:id="@+id/krutilka1"/>
+</LinearLayout>
+=======
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,3 +30,4 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+>>>>>>> 1991aad... Пустой проект с кастомной вьюхой "Крутилка"

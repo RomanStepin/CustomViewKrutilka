@@ -21,16 +21,21 @@ import java.util.concurrent.TimeUnit;
 
 public class KrutilkaView extends View
 {
-    int segmentCount;
-    int colorTheme;
-    int Color1;
-    int Color2;
-    int ColorGrad;
-    float radius;
-    Picture picture;
-    Canvas canvas;
-    float rotate_angle;
-    Executor executor;
+   private int segmentCount;
+    private int colorTheme;
+    private int Color1;
+    private int Color2;
+    private int ColorGrad;
+    private float radius;
+    private float rotate_angle;
+    private Executor executor;
+    Paint paint;
+    RectF oval;
+    float segment_alpha;
+    float d_alpha;
+    RadialGradient radialGradient1;
+    RadialGradient radialGradient2;
+
 
     public KrutilkaView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -57,6 +62,13 @@ public class KrutilkaView extends View
                 break;
         }
         radius = typedArray.getFloat(R.styleable.KrutilkaView_radius,-1);
+        if (radius <= 0) {
+            if (this.getWidth() > this.getHeight()) radius = this.getHeight()/2;            // если радиус не задан - берем минимальную сторону / 2
+            else radius = this.getWidth()/2; }
+        paint = new Paint();
+        oval = new RectF(0,0, radius*2, radius*2);
+        radialGradient1 = new RadialGradient(oval.centerX(), oval.centerY(), radius/3, Color1, ColorGrad, Shader.TileMode.MIRROR);
+        radialGradient2 = new RadialGradient(oval.centerX(), oval.centerY(), radius/3, Color2, ColorGrad, Shader.TileMode.MIRROR);
         rotate_angle = 0;
         executor = Executors.newSingleThreadExecutor();
     }
@@ -68,45 +80,29 @@ public class KrutilkaView extends View
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        float height = (float)this.getHeight();
-        float width = (float)this.getWidth();
-        float alpha = (float)360/segmentCount;
-        if (radius <= 0) {
-            if (width > height) radius = height/2;
-            else radius = width/2; }
-        float diameter = radius * 2;
-
         super.onDraw(canvas);
-        this.canvas = canvas;
+        segment_alpha = (float)360/segmentCount;                                            // угол сегмента
 
-
-        picture = new Picture();
-        picture.beginRecording((int)width,(int)height);
-        Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.GRAY);
-        RectF oval = new RectF(0,0, diameter, diameter);
         canvas.rotate(rotate_angle, oval.centerX(), oval.centerY());
-        canvas.drawOval(oval,paint);
-
-        float d_alpha = 0;
+        canvas.drawOval(oval, paint);
+        d_alpha = 0;
         for (int i = 0; i < segmentCount; i++) {
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(Color.RED);
             paint.setStrokeWidth(2);
             if (i % 2 > 0)
-                paint.setShader(new RadialGradient(oval.centerX(), oval.centerY(), radius/3, Color1, ColorGrad, Shader.TileMode.MIRROR));
+                paint.setShader(radialGradient1);
             else
-                paint.setShader(new RadialGradient(oval.centerX(), oval.centerY(), radius/3, Color2, ColorGrad, Shader.TileMode.MIRROR));
-            canvas.drawArc(oval, d_alpha, alpha, true, paint);
+                paint.setShader(radialGradient2);
+            canvas.drawArc(oval, d_alpha, segment_alpha, true, paint);
             paint.setShader(null);
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.BLACK);
-            canvas.drawArc(oval, d_alpha, alpha, true, paint);
-            d_alpha += alpha;
+            canvas.drawArc(oval, d_alpha, segment_alpha, true, paint);
+            d_alpha += segment_alpha;
         }
-        picture.endRecording();
     }
 
     public void rotate(final float angle)
@@ -119,7 +115,7 @@ public class KrutilkaView extends View
                 float absAngle = Math.abs(angle);
                 for (int i = 0; i < absAngle; i++) {
                     rotate_angle += (angle/absAngle);
-                    invalidate();
+                    postInvalidate();
                     try {
                         TimeUnit.MILLISECONDS.sleep((long)speed);
                     } catch (InterruptedException e) {

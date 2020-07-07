@@ -28,7 +28,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+<<<<<<< HEAD
+        KrutilkaView krutilkaView = findViewById(R.id.krutilka1);
+        krutilkaView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((KrutilkaView)v).rotate(360);
+            }
+        });
+=======
 
+>>>>>>> 1991aad... Пустой проект с кастомной вьюхой "Крутилка"
     }
 }
 
